@@ -22,6 +22,21 @@ function HomePage(){
         document.title = 'AGZ';
     },[]);
 
+    ///////////////////////////
+      useEffect(() => {
+        const testEndpoint = async () => {
+          try {
+            const response = await axios.get('https://examenwebback2-production-asd.up.railway.app/eventos');
+            console.log('Respuesta:', response.data);
+          } catch (error) {
+            console.error('Error:', error.message);
+          }
+        };
+
+        testEndpoint();
+      }, []);
+    ///////////////////////////
+
     const toggleLogs = () => {
       setShowLogs(!showLogs);
     };

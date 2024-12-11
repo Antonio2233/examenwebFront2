@@ -13,7 +13,6 @@ function LogViewer({email}) {
 
     const urlPeticion = `${apiEndpoint.api}/logs/?filter_user=${email}`;
 
-    //const urlPeticion = `http://localhost:8000/logs/?filter_user=${email}`
 
     const reloadLogs = () => {
         setReload(!reload);

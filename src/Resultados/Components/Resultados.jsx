@@ -31,7 +31,6 @@ const Resultados = () => {
 
 
   const handleCreate = () => {
-      // http://localhost:5173/eventos/edicion/67541062e8765687877033d7
       navigate(`/eventos/creacion`);
   }
 
