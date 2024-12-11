@@ -5,6 +5,7 @@ import Navbar from '../../Common/NavBar';
 import MapComponent from '../../Common/MapComponent';
 
 import UploadFile from '../../Common/UploadFile';
+import apiEndpoint from '../../assets/apiEndpoints.json'
 
 
 const Creacion = () => {
@@ -47,7 +48,11 @@ const Creacion = () => {
       };
 
       console.log(eventData);
-      const response = await axios.post('http://127.0.0.1:8000/eventos', updatedEventData);
+      let urlPost = apiEndpoint.api + '/eventos/';
+
+      // const response = await axios.post('http://127.0.0.1:8000/eventos', updatedEventData);
+      const response = await axios.post(urlPost, updatedEventData);
+
       console.log('Evento creado:', response.data);
       setSuccessMessage('Evento creado exitosamente!');
     } catch (err) {

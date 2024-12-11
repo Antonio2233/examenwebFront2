@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams} from 'react-router-dom';  // Para manejar rutas dinámicas y navegación
 import Navbar from '../../Common/NavBar';
 import MapComponent from '../../Common/MapComponent';
+import apiEndpoint from '../../assets/apiEndpoints.json'
+
 
 const Edicion = () => {
   const { id } = useParams();  // Obtener el id del evento desde la URL
@@ -30,7 +32,10 @@ const Edicion = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/eventos/${id}`);
+        let urlApi = apiEndpoint.api + '/eventos/' + id;
+        //const response = await axios.get(`http://127.0.0.1:8000/eventos/${id}`);
+        const response = await axios.get(urlApi);
+
         setEventData(response.data);
         setCoordinates({
           lat: parseFloat(response.data.lat) || 0,
@@ -64,7 +69,11 @@ const Edicion = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/eventos/${id}`, eventData);
+        //localhost
+      let urlPut = apiEndpoint.api + '/eventos/' + id;
+      // const response = await axios.put(`http://127.0.0.1:8000/eventos/${id}`, eventData);
+      const response = await axios.put(urlPut, eventData);
+
       console.log('Evento actualizado:', response.data);
       setSuccessMessage('¡Guardado exitosamente!');
     } catch (err) {

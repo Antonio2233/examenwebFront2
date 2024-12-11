@@ -22,9 +22,6 @@ function HomePage(){
         document.title = 'AGZ';
     },[]);
 
-    ///////////////////////////
-    ///////////////////////////
-
     const toggleLogs = () => {
       setShowLogs(!showLogs);
     };
