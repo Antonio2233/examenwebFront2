@@ -31,7 +31,7 @@ function HomePage(){
       {/* <Navbar/> */}
 
       <div className='flex flex-col justify-center items-center flex-grow gap-y-7'>
-        <h1 id='titulo' className='text-center text-6xl font-sans font-bold italic tracking-wide'>EVENTUAL</h1>
+        <h1 id='titulo' className='text-center text-6xl font-sans font-bold italic tracking-wide'>PRUEBAS</h1>
         <footer className='text-center text-2xl max-w-2xl mx-auto font-medium'>Bienvenido a Eventual</footer>
         <SearchBar></SearchBar>
 

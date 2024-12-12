@@ -5,10 +5,13 @@ import Navbar from '../../Common/NavBar';
 import MapComponent from '../../Common/MapComponent';
 import apiEndpoint from '../../assets/apiEndpoints.json'
 
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const Edicion = () => {
   const { id } = useParams();  // Obtener el id del evento desde la URL
   const [successMessage, setSuccessMessage] = useState(''); // Estado para el mensaje de éxito
+  let now = new Date();
 
   const [coordinates,setCoordinates] = useState({
     lat: 0,
@@ -74,10 +77,42 @@ const Edicion = () => {
       // const response = await axios.put(`http://127.0.0.1:8000/eventos/${id}`, eventData);
       const response = await axios.put(urlPut, eventData);
 
+      console.log("prepostlog")
+      await postLog(urlPut);
+
       console.log('Evento actualizado:', response.data);
       setSuccessMessage('¡Guardado exitosamente!');
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const postLog = async (urlPut) => {
+    const now = new Date();
+    const email = cookies.get('email'); // Obtener el email del usuario desde las cookies
+    if (!email) {
+      console.error('No se encontró el email en las cookies.');
+      return;
+    }
+
+    const payload = {
+      timestamp: new Date(now.getTime()),
+      email: cookies.get('email'),
+      caducidad: new Date(now.getTime() + 1 * 1000),
+      token: "operacion edit",
+      datoalmacenado: urlPut,
+    };
+    console.log("payload");
+    console.log(payload);
+
+    try {
+      const urlpostlog = `${apiEndpoint.api}/logs/`;
+      await axios.post(urlpostlog, payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log('Log creado con éxito');
+    } catch (error) {
+      console.error('Error creando el log:', error);
     }
   };
 

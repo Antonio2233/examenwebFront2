@@ -7,6 +7,7 @@ function SingleLog({data}) {
         <div>
             <p>{data.timestamp}</p>
             <p>{data.email}</p>
+            <p>{data.datoalmacenado}</p>
         </div>
     )
 

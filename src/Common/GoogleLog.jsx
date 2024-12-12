@@ -67,13 +67,14 @@ function GoogleLog() {
             email: profile.email,
             caducidad: new Date(now.getTime() + user.expires_in * 1000),
             token: user.access_token,
+            datoalmacenado: "",
         };
 
         try {
 
-            let urlpost = apiEndpoint.api + '/logs/';
+            let urlpostlog = apiEndpoint.api + '/logs/';
 
-            const response = await axios.post(urlpost, payload, {
+            const response = await axios.post(urlpostlog, payload, {
               headers: {
                 'Content-Type': 'application/json',
               },
