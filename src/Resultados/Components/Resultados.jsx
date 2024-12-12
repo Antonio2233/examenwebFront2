@@ -20,6 +20,9 @@ const Resultados = () => {
   const latitud = searchParams.get("latitud");
   const longitud = searchParams.get("longitud");
   const nombre = searchParams.get("nombre");
+  // tocar si buscar secund
+  const organizador = searchParams.get("organizador");
+
 
   const classnamebotonVerde = "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200 mr-2 mt-2";
 
@@ -55,9 +58,12 @@ const Resultados = () => {
   const getData = async () => {
     let urlApi = apiEndpoint.api + '/eventos/?';
 
+    console.log(latitud)
+
     if (latitud) urlApi += `lat=${latitud}&`;
     if (longitud) urlApi += `lon=${longitud}`;
     if (nombre) urlApi += `&nombre=${nombre}`;
+    if (organizador) urlApi += `&organizador=${organizador}`;
 
     try {
       setLoading(true);

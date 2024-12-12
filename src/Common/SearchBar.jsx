@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [nombre, setNombre] = useState('');
+  const [organizador, setOrganizador] = useState('');
+
   const [coordinates, setCoordinates] = useState({
     lat: '',
     lon: ''
@@ -24,9 +26,10 @@ const SearchBar = () => {
           lat: data[0].lat,
           lon: data[0].lon
         };
-      } else {
-        alert("No se encontraron resultados para la dirección proporcionada.");
-        return null;
+      }
+      else {
+        // alert("No se encontraron resultados para la dirección proporcionada.");
+        // return null;
       }
     } catch (error) {
       console.error("Error al buscar coordenadas:", error);
@@ -46,16 +49,28 @@ const SearchBar = () => {
         setCoordinates(coords);
         params.append("latitud", coords.lat);
         params.append("longitud", coords.lon);
+        params.append("organizador",organizador);
+      }
+    }
+    else if(organizador.trim()){
+        params.append("organizador",organizador);
+    }else{
+      const coords = await fetchCoordinates("Malaga");
+      if (coords) {
+        setCoordinates(coords);
+        params.append("latitud", coords.lat);
+        params.append("longitud", coords.lon);
       }
     }
 
-    if (coordinates.lat) params.append("latitud", coordinates.lat);
-    if (coordinates.lon) params.append("longitud", coordinates.lon);
+    // if (coordinates.lat) params.append("latitud", coordinates.lat);
+    // if (coordinates.lon) params.append("longitud", coordinates.lon);
+
 
     if (params.toString()) {
       navigate(`/eventos?${params.toString()}`);
     } else {
-      alert("Por favor, rellena al menos un campo para buscar.");
+      // alert("Por favor, rellena al menos un campo para buscar.");
     }
   };
 
@@ -65,9 +80,18 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Nombre o dirección"
-          required={true}
+          // required={true}
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
+          className='border rounded px-4 py-2 w-full mr-3'
+        />
+
+        <input
+          type="text"
+          placeholder="Organizador"
+          // required={true}
+          value={organizador}
+          onChange={(e) => setOrganizador(e.target.value)}
           className='border rounded px-4 py-2 w-full mr-3'
         />
 
