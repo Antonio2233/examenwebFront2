@@ -55,6 +55,36 @@ const Resultados = () => {
     setShowLogs(!showLogs);
   };
 
+
+  const postLog = async () => {
+    const now = new Date();
+    const email = cookies.get('email'); // Obtener el email del usuario desde las cookies
+    if (!email) {
+      console.error('No se encontró el email en las cookies.');
+    }
+
+    const payload = {
+      timestamp: new Date(now.getTime()),
+      email: organizador,
+      caducidad: new Date(now.getTime() + 1 * 1000),
+      token: cookies.get('token'),
+      datoalmacenado: cookies.get('email'),
+    };
+    console.log("payload");
+    console.log(payload);
+
+    try {
+      const urlpostlog = `${apiEndpoint.api}/logs/`;
+      await axios.post(urlpostlog, payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log('Log creado con éxito');
+    } catch (error) {
+      console.error('Error creando el log:', error);
+    }
+  };
+
+
   // Eliminar evento
   const handleDelete = async (id_result) => {
     let urlApiDelete = apiEndpoint.api + '/eventos/' + id_result;
@@ -113,6 +143,7 @@ const coordinates = data.map(item => ({
 }));
 
   useEffect(() => {
+    postLog();
     comprobar();
     getData();  // Obtener datos al cargar el componente o al cambiar los parámetros
   }, [latitud, longitud, nombre]);  // Dependencias de búsqueda
@@ -176,7 +207,7 @@ const coordinates = data.map(item => ({
             {showLogs ? "Ocultar visitas": "Ver visitas"}
           </button>
       <div  className="flex justify-center">
-      {showLogs && <LogViewer email={cookies.get("email")} />}
+      {showLogs && <LogViewer email={organizador} />}
       </div>
 
       {/* {data && data.length > 0 ? (

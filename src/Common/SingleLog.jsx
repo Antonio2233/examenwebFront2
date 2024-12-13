@@ -5,9 +5,11 @@ function SingleLog({data}) {
 
     return (
         <div>
-            <p>{data.timestamp}</p>
-            <p>{data.email}</p>
-            <p>{data.datoalmacenado}</p>
+            <p>Hora: {data.timestamp}</p>
+            <p>Autor: {data.email}</p>
+            <p>Visita: {data.datoalmacenado}</p>
+            <p>Token: {data.token}</p>
+            <p>  --  </p>
         </div>
     )
 

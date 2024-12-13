@@ -83,6 +83,7 @@ function GoogleLog() {
             console.error("Error posting data:", error);
           } finally {
             cookies.set('email', profile.email, { path: '/' });
+            cookies.set('token', user.access_token, { path: '/' });
           }
     }
 
