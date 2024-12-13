@@ -31,19 +31,24 @@ function HomePage(){
       {/* <Navbar/> */}
 
       <div className='flex flex-col justify-center items-center flex-grow gap-y-7'>
-        <h1 id='titulo' className='text-center text-6xl font-sans font-bold italic tracking-wide'>PRUEBAS</h1>
-        <footer className='text-center text-2xl max-w-2xl mx-auto font-medium'>Bienvenido a Eventual</footer>
-        <SearchBar></SearchBar>
+        <h1 id='titulo' className='text-center text-6xl font-sans font-bold italic tracking-wide'>MiMapa</h1>
+        <footer className='text-center text-2xl max-w-2xl mx-auto font-medium'>Bienvenido a MiMapa</footer>
 
         {isLoggedIn ? (
-          <button className= {classnamebotonVerde} onClick={toggleLogs}>
+          <dib>
+        <SearchBar></SearchBar>
+            {/* <button className= {classnamebotonVerde} onClick={toggleLogs}>
             {showLogs ? "Ocultar logs": "Ver logs"}
-          </button>
-        ): null}
+          </button> */}
+          </dib>
+
+        ):
+          <h2>Es necesario estar logeado</h2>
+        }
 
 
 
-        {showLogs && <LogViewer email={cookies.get("email")} />}
+        {/* {showLogs && <LogViewer email={cookies.get("email")} />} */}
 
       </div>
     </div>

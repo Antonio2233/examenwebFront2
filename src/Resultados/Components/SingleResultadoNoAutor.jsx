@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from '../../Common/SessionProvider'; // Importa el hook
 
 
-const SingleResultado = ({ item, onEdit, onDelete}) => {
+const SingleResultadoNoAutor = ({ item, onEdit, onDelete}) => {
 
     const { isLoggedIn } = useSession(); // Obtén el estado de inicio de sesión
 
@@ -32,12 +32,6 @@ const SingleResultado = ({ item, onEdit, onDelete}) => {
         {isLoggedIn ? (
           <div>
             <img className='mb-2 mt-2' src={item.imagen}></img>
-            <button className={classnamebotonVerde} onClick={handleEdit}>
-              EDITAR
-            </button>
-            <button className={classnamebotonBorrar} onClick={handleDelete}>
-              BORRAR
-            </button>
           </div>
         ) : null}
     </div>
@@ -45,4 +39,4 @@ const SingleResultado = ({ item, onEdit, onDelete}) => {
   );
 };
 
-export default SingleResultado;
+export default SingleResultadoNoAutor;

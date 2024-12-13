@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import Cookies from 'universal-cookie';
+
+
 const SearchBar = () => {
   const [nombre, setNombre] = useState('');
   const [organizador, setOrganizador] = useState('');
+  const cookies = new Cookies();
+
 
   const [coordinates, setCoordinates] = useState({
     lat: '',
@@ -11,6 +16,8 @@ const SearchBar = () => {
   });
 
   const classnameboton = "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200";
+  const classnamebotonred = "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200 ml-2";
+
   const navigate = useNavigate();
 
   // Función para realizar la búsqueda en OpenStreetMap
@@ -55,12 +62,17 @@ const SearchBar = () => {
     else if(organizador.trim()){
         params.append("organizador",organizador);
     }else{
-      const coords = await fetchCoordinates("Malaga");
-      if (coords) {
-        setCoordinates(coords);
-        params.append("latitud", coords.lat);
-        params.append("longitud", coords.lon);
-      }
+      const email = cookies.get('email'); // Obtener el email del usuario desde las cookies
+
+      params.append("organizador",email);
+
+
+      // const coords = await fetchCoordinates("Malaga");
+      // if (coords) {
+      //   setCoordinates(coords);
+      //   params.append("latitud", coords.lat);
+      //   params.append("longitud", coords.lon);
+      // }
     }
 
     // if (coordinates.lat) params.append("latitud", coordinates.lat);
@@ -77,18 +89,18 @@ const SearchBar = () => {
   return (
     <form onSubmit={search} className='flex gap-3 justify-center'>
       <div className='flex row'>
-        <input
+        {/* <input
           type="text"
-          placeholder="Nombre o dirección"
+          placeholder="Dirección"
           // required={true}
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           className='border rounded px-4 py-2 w-full mr-3'
-        />
+        /> */}
 
         <input
           type="text"
-          placeholder="Organizador"
+          placeholder="Autor de Mapa"
           // required={true}
           value={organizador}
           onChange={(e) => setOrganizador(e.target.value)}
@@ -111,8 +123,10 @@ const SearchBar = () => {
           className='border rounded px-4 py-2 w-full mr-3'
         /> */}
 
-        <button type='submit' className={classnameboton}>Buscar</button>
+        <button type='submit' className={classnameboton}>Buscar Autor</button>
+        <button type='submit' className={classnamebotonred}>Ver MiMapa</button>
       </div>
+
     </form>
   );
 };

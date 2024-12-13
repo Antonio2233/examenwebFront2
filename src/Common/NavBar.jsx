@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo o título */}
         <div className="text-white text-lg font-semibold">
-          <Link to="/">Mi Aplicación</Link>
+          <Link to="/">MiMapa</Link>
         </div>
         {/* Botones */}
         <div className="flex space-x-4">

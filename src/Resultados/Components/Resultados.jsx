@@ -10,11 +10,17 @@ import apiEndpoint from '../../assets/apiEndpoints.json';
 import SingleResultado from './SingleResultado';
 import MapComponent from '../../Common/MapComponent';
 import { useSession } from '../../Common/SessionProvider'; // Importa el hook
+import LogViewer from '../../Common/LogViewer';
+import Cookies from 'universal-cookie';
+import SingleResultadoNoAutor from './SingleResultadoNoAutor';
+
+const cookies = new Cookies();
+
 
 const Resultados = () => {
+  const [showLogs, setShowLogs] = useState(false);
 
   const { isLoggedIn } = useSession(); // Obtén el estado de inicio de sesión
-
 
   const [searchParams] = useSearchParams();
   const latitud = searchParams.get("latitud");
@@ -25,10 +31,18 @@ const Resultados = () => {
 
 
   const classnamebotonVerde = "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200 mr-2 mt-2";
+  const classnamebotonVerVisitas = "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200 mr-2 mt-2 ml-2 mb-2";
+
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+
+  const [esAutor, setEsAutor] = useState(false);
+
+
 
   const navigate = useNavigate();
 
@@ -36,6 +50,10 @@ const Resultados = () => {
   const handleCreate = () => {
       navigate(`/eventos/creacion`);
   }
+
+  const toggleLogs = () => {
+    setShowLogs(!showLogs);
+  };
 
   // Eliminar evento
   const handleDelete = async (id_result) => {
@@ -54,11 +72,19 @@ const Resultados = () => {
     }
   };
 
+  const comprobar = async () => {
+    if (cookies.get("email") == organizador){
+      setEsAutor(true)
+    }
+  };
+
   // Obtener los datos de los eventos
   const getData = async () => {
     let urlApi = apiEndpoint.api + '/eventos/?';
 
     console.log(latitud)
+
+
 
     if (latitud) urlApi += `lat=${latitud}&`;
     if (longitud) urlApi += `lon=${longitud}`;
@@ -87,22 +113,26 @@ const coordinates = data.map(item => ({
 }));
 
   useEffect(() => {
+    comprobar();
     getData();  // Obtener datos al cargar el componente o al cambiar los parámetros
   }, [latitud, longitud, nombre]);  // Dependencias de búsqueda
 
   return (
     <div>
       {/* <Navbar /> */}
-      <h1>Resultados:</h1>
+      <h1>El botón de ver visitas está debajo del mapa:</h1>
 
       {loading ? <p>Cargando...</p> : null}
       {error && <p className="text-red-500">Error: {error}</p>}
 
-    {isLoggedIn ? (
+
+
+    {(isLoggedIn && esAutor)? (
+      <div>
+
       <div  className="flex justify-center">
-      <button onClick={handleCreate} className={`${classnamebotonVerde}`}>CREAR </button>
+        <button onClick={handleCreate} className={`${classnamebotonVerde}`}>CREAR MAPA </button>
       </div>
-    ): null}
 
       {data && data.length > 0 ? (
         <ul>
@@ -116,9 +146,54 @@ const coordinates = data.map(item => ({
           ))}
         </ul>
       ) : (
-        !loading && <p>No se encontraron eventos.</p>
+        !loading && <p>No se encontraron mapas. Pruebe a crear uno.</p>
       )}
       <MapComponent coordinates={coordinates}/>
+
+      </div>
+    ):(<div>
+      {data && data.length > 0 ? (
+        <ul>
+          {data.map((item) => (
+            <SingleResultadoNoAutor
+              key={item.id}
+              item={item}
+              onEdit={() => {}}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
+      ) : (
+        !loading && <p>No se encontraron mapas. Pruebe a crear uno.</p>
+      )}
+      <MapComponent coordinates={coordinates}/>
+
+    </div>)
+    }
+
+
+      <button className= {classnamebotonVerVisitas} onClick={toggleLogs}>
+            {showLogs ? "Ocultar visitas": "Ver visitas"}
+          </button>
+      <div  className="flex justify-center">
+      {showLogs && <LogViewer email={cookies.get("email")} />}
+      </div>
+
+      {/* {data && data.length > 0 ? (
+        <ul>
+          {data.map((item) => (
+            <SingleResultado
+              key={item.id}
+              item={item}
+              onEdit={() => {}}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
+      ) : (
+        !loading && <p>No se encontraron mapas. Pruebe a crear uno.</p>
+      )}
+      <MapComponent coordinates={coordinates}/> */}
     </div>
   );
 };

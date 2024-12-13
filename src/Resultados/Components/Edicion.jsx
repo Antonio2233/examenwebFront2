@@ -129,7 +129,7 @@ const Edicion = () => {
         {error && <p className="text-red-500">{error}</p>}
 
         <label className="block mb-2">
-          <strong>Nombre:</strong>
+          <strong>Descripcion:</strong>
           <input
             type="text"
             name="nombre"
@@ -140,7 +140,7 @@ const Edicion = () => {
         </label>
 
         <label className="block mb-2">
-          <strong>Organizador:</strong>
+          <strong>Autor:</strong>
           <input
             type="email"
             name="organizador"
